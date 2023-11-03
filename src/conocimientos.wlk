@@ -1,3 +1,8 @@
+class Actividad{
+	const property tema
+	const property cantidadHoras
+}
+
 object programacionBasica { method commitsPorHora() = 5 }
 object objetos { method commitsPorHora() = 12 }
 object css { method commitsPorHora() = 40 }

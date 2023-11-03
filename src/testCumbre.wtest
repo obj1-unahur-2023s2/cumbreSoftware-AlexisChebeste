@@ -1,0 +1,57 @@
+import cumbre.*
+import paises.*
+import conocimientos.*
+import participantes.*
+
+describe "test primera etapa"{
+	const coreaDelSur = new Pais()
+	const coreaDelNorte = new Pais()
+	const argentina = new Pais()
+	const colombia = new Pais()
+	const brasil = new Pais()
+	const juana = new Programador(commits = 600, pais = argentina, conocimientos=[programacionBasica, css, html])
+	const lucia = new Programador(commits = 800, pais = brasil,conocimientos=[programacionBasica, basesDeDatos])
+	const mariana = new Especialista(commits = 250, pais = argentina,conocimientos=[programacionBasica, instalacionLinux, objetos, instalacionLinux])
+	const susana = new Especialista(commits = 1500, pais = colombia,conocimientos=[programacionBasica, objetos])
+	
+	method initialize(){
+		coreaDelNorte.registrarConflicto(coreaDelSur)
+		coreaDelSur.registrarConflicto(coreaDelNorte)
+		cumbre.agregarPaisAuspiciante(coreaDelNorte)
+		cumbre.agregarPaisAuspiciante(argentina)
+		cumbre.agregarPaisAuspiciante(colombia)
+		cumbre.agregarParticipante(juana)
+		cumbre.agregarParticipante(lucia)
+		cumbre.agregarParticipante(mariana)
+	}
+	test "es conflicto para la cumbre"{
+		assert.that(cumbre.esConflictoParaLaCumbre(coreaDelSur))
+	}
+	
+	test "paises participantes, tienen que ser argentina y brasil"{
+		assert.equals([argentina,brasil], cumbre.paisesConParticipante())
+	}
+	test "cantidad de participantes argentinos en la cumbre son 2"{
+		// Debido a que mariana no cumplia con los requisitos de acceso, modifique los commits de ella
+		assert.equals(2, cumbre.participantesDePais(argentina))
+	}
+	test "cantidad de participantes brasilenios en la cumbre son 1"{
+		assert.equals(1, cumbre.participantesDePais(brasil))
+	}
+	test "pais con mas participantes es argentina"{
+		assert.equals(argentina, cumbre.paisConMasParticipantes())
+	}
+	test "la cumbre es revelante"{
+		assert.that(cumbre.esRevelante())
+	}
+	test "la cumbre no es revelante si agregamos a la cumbre a susana"{
+		cumbre.agregarParticipante(susana)
+		assert.notThat(cumbre.esRevelante())
+	}
+	test "lucia es una participante extranjera"{
+		assert.equals([lucia], cumbre.participantesExtranjeros())
+	}
+	test "la cumbre es segura"{
+		assert.that(cumbre.esSegura())
+	}
+}
